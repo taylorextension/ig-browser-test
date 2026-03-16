@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Teste abrir no navegador</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { margin: 0; background: #0f172a; color: #e2e8f0; display: grid; min-height: 100vh; place-items: center; }
+    .card { width: min(92vw, 560px); background: #111827; border: 1px solid #334155; border-radius: 14px; padding: 20px; }
+    h1 { font-size: 1.25rem; margin: 0 0 10px; }
+    p { opacity: .9; line-height: 1.45; }
+    .row { display: grid; gap: 10px; margin-top: 16px; }
+    button, a.btn { border: 0; border-radius: 10px; padding: 12px 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
+    .primary { background: #22c55e; color: #062b14; }
+    .ghost { background: #1f2937; color: #cbd5e1; border: 1px solid #334155; }
+    code { background: #1e293b; padding: 2px 6px; border-radius: 6px; }
+    .hint { margin-top: 12px; font-size: .9rem; opacity: .8; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Abrir fora do Instagram/Facebook</h1>
+    <p>Se você está no navegador interno, toque no botão para tentar abrir este mesmo link no navegador padrão do celular.</p>
+
+    <div class="row">
+      <button id="openExternal" class="primary">Abrir no navegador do celular</button>
+      <a id="targetLink" class="btn ghost" href="https://example.com" rel="noopener">Ir para seu app (exemplo)</a>
+    </div>
+
+    <p class="hint">Dica: no Instagram/Facebook, também pode usar <code>⋯</code> → <code>Abrir no navegador</code>.</p>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const target = params.get('target') || 'https://example.com';
+
+    const safeTarget = (() => {
+      try {
+        const u = new URL(target);
+        if (!['http:', 'https:'].includes(u.protocol)) throw new Error('invalid protocol');
+        return u.toString();
+      } catch {
+        return 'https://example.com';
+      }
+    })();
+
+    const targetLink = document.getElementById('targetLink');
+    targetLink.href = safeTarget;
+    targetLink.textContent = `Ir para seu app: ${new URL(safeTarget).host}`;
+
+    document.getElementById('openExternal').addEventListener('click', () => {
+      window.location.href = safeTarget;
+    });
+  </script>
+</body>
+</html>
