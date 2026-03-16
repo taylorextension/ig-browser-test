@@ -25,7 +25,7 @@
 
     <div class="row">
       <button id="openExternal" class="primary">Abrir no navegador do celular</button>
-      <a id="targetLink" class="btn ghost" href="https://example.com" rel="noopener">Ir para seu app (exemplo)</a>
+      <a id="targetLink" class="btn ghost" href="#" rel="noopener">Defina o link do seu app</a>
     </div>
 
     <p class="hint">Dica: no Instagram/Facebook, também pode usar <code>⋯</code> → <code>Abrir no navegador</code>.</p>
@@ -33,7 +33,7 @@
 
   <script>
     const params = new URLSearchParams(location.search);
-    const target = params.get('target') || 'https://example.com';
+    const target = params.get('target') || '';
 
     const safeTarget = (() => {
       try {
@@ -41,17 +41,27 @@
         if (!['http:', 'https:'].includes(u.protocol)) throw new Error('invalid protocol');
         return u.toString();
       } catch {
-        return 'https://example.com';
+        return null;
       }
     })();
 
     const targetLink = document.getElementById('targetLink');
-    targetLink.href = safeTarget;
-    targetLink.textContent = `Ir para seu app: ${new URL(safeTarget).host}`;
+    const openBtn = document.getElementById('openExternal');
 
-    document.getElementById('openExternal').addEventListener('click', () => {
-      window.location.href = safeTarget;
-    });
+    if (safeTarget) {
+      targetLink.href = safeTarget;
+      targetLink.textContent = `Ir para seu app: ${new URL(safeTarget).host}`;
+      openBtn.addEventListener('click', () => {
+        window.location.href = safeTarget;
+      });
+    } else {
+      targetLink.textContent = 'Falta ?target= no link';
+      targetLink.removeAttribute('href');
+      openBtn.textContent = 'Use um link com ?target=';
+      openBtn.disabled = true;
+      openBtn.style.opacity = '.6';
+      openBtn.style.cursor = 'not-allowed';
+    }
   </script>
 </body>
 </html>
