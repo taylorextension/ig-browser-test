@@ -1,67 +1,256 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Teste abrir no navegador</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VINTEL — Compra inteligente de seminovos</title>
+  <meta name="description" content="VINTEL: verificação inteligente de veículos com foco em risco real, não em promessa vazia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    body { margin: 0; background: #0f172a; color: #e2e8f0; display: grid; min-height: 100vh; place-items: center; }
-    .card { width: min(92vw, 560px); background: #111827; border: 1px solid #334155; border-radius: 14px; padding: 20px; }
-    h1 { font-size: 1.25rem; margin: 0 0 10px; }
-    p { opacity: .9; line-height: 1.45; }
-    .row { display: grid; gap: 10px; margin-top: 16px; }
-    button, a.btn { border: 0; border-radius: 10px; padding: 12px 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
-    .primary { background: #22c55e; color: #062b14; }
-    .ghost { background: #1f2937; color: #cbd5e1; border: 1px solid #334155; }
-    code { background: #1e293b; padding: 2px 6px; border-radius: 6px; }
-    .hint { margin-top: 12px; font-size: .9rem; opacity: .8; }
+    :root {
+      --bg: #0c1318;
+      --ink: #f0f5f7;
+      --muted: #b9c7cf;
+      --accent: #f4b183;
+      --line: rgba(240,245,247,0.16);
+      --glass: rgba(8, 18, 24, 0.55);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+    body {
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      min-height: 100svh;
+      position: relative;
+      display: grid;
+      align-items: end;
+      isolation: isolate;
+      background:
+        linear-gradient(170deg, rgba(9,20,27,0.18), rgba(9,20,27,0.78) 56%, rgba(9,20,27,0.95)),
+        url("https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=1800&q=80") center/cover no-repeat;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(1000px 440px at 70% 10%, rgba(244,177,131,.18), transparent 70%);
+      z-index: -1;
+    }
+
+    .hero-inner {
+      width: min(980px, 90vw);
+      margin: 0 auto 7vh;
+      background: var(--glass);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(7px);
+      border-radius: 20px;
+      padding: clamp(20px, 4vw, 42px);
+      transform: translateY(16px);
+      opacity: 0;
+      animation: rise 820ms cubic-bezier(.2,.8,.2,1) 140ms forwards;
+    }
+
+    .brand {
+      font-family: "Cormorant Garamond", serif;
+      letter-spacing: .07em;
+      font-size: clamp(38px, 8vw, 84px);
+      line-height: .9;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 18ch;
+      font-size: clamp(1.35rem, 2.9vw, 2.35rem);
+      font-weight: 500;
+    }
+
+    .sub {
+      color: var(--muted);
+      max-width: 52ch;
+      margin-top: 14px;
+      font-size: clamp(.98rem, 1.6vw, 1.1rem);
+    }
+
+    .cta-row {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 12px 18px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: transform .2s ease, background .25s ease, border-color .25s ease;
+    }
+
+    .btn-primary { background: var(--accent); color: #111; }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-ghost { border-color: var(--line); background: rgba(255,255,255,.02); }
+    .btn-ghost:hover { border-color: rgba(240,245,247,.35); transform: translateY(-2px); }
+
+    section {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 88px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.4rem, 2.7vw, 2rem);
+      font-weight: 600;
+      letter-spacing: .01em;
+    }
+
+    .section-sub {
+      margin: 0 0 26px;
+      color: var(--muted);
+      max-width: 60ch;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .photo {
+      min-height: 320px;
+      border-radius: 16px;
+      background:
+        linear-gradient(145deg, rgba(10,18,22,.36), rgba(10,18,22,.7)),
+        url("https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+      transform: translateY(0);
+      transition: transform .6s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .list li {
+      padding-left: 18px;
+      position: relative;
+      color: #d3dde2;
+    }
+
+    .list li::before {
+      content: "•";
+      color: var(--accent);
+      position: absolute;
+      left: 0;
+    }
+
+    .final {
+      text-align: center;
+      padding-bottom: 110px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 860px) {
+      .split { grid-template-columns: 1fr; }
+      .photo { min-height: 260px; }
+      section { padding: 72px 0; }
+    }
   </style>
 </head>
 <body>
-  <main class="card">
-    <h1>Abrir fora do Instagram/Facebook</h1>
-    <p>Se você está no navegador interno, toque no botão para tentar abrir este mesmo link no navegador padrão do celular.</p>
-
-    <div class="row">
-      <button id="openExternal" class="primary">Abrir no navegador do celular</button>
-      <a id="targetLink" class="btn ghost" href="#" rel="noopener">Defina o link do seu app</a>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="brand">VINTEL</p>
+      <h1>Compre seminovo com cabeça fria e dado real.</h1>
+      <p class="sub">Menos showroom, mais evidência: cruzamos histórico, risco e preço-alvo em um fluxo direto para decisão rápida.</p>
+      <div class="cta-row">
+        <a href="#cta" class="btn btn-primary">Avaliar um VIN</a>
+        <a href="#metodo" class="btn btn-ghost">Ver método</a>
+      </div>
     </div>
+  </header>
 
-    <p class="hint">Dica: no Instagram/Facebook, também pode usar <code>⋯</code> → <code>Abrir no navegador</code>.</p>
-  </main>
+  <section id="metodo" class="reveal">
+    <h2>Você ganha clareza antes da negociação.</h2>
+    <p class="section-sub">Estratégia de conteúdo: promessa no herói, prova no suporte, profundidade no detalhe e fechamento com CTA único.</p>
+    <div class="split">
+      <div>
+        <ul class="list">
+          <li>Status objetivo do veículo em minutos.</li>
+          <li>Risco real separado de ruído de vendedor.</li>
+          <li>Recomendação com limite de preço e ponto de saída.</li>
+        </ul>
+      </div>
+      <div class="photo" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>Um fluxo simples, sem dashboard de enfeite.</h2>
+    <p class="section-sub">1) puxamos o histórico, 2) marcamos inconsistências críticas, 3) montamos roteiro de negociação pronto para enviar.</p>
+    <ul class="list">
+      <li>Foco em inconsistência de odômetro, título, recall e reparo.</li>
+      <li>Checklist de compra pronto para WhatsApp do vendedor.</li>
+      <li>Decisão binária no fim: comprar, negociar forte ou sair fora.</li>
+    </ul>
+  </section>
+
+  <section id="cta" class="final reveal">
+    <h2>Quer testar agora com um VIN real?</h2>
+    <p class="section-sub" style="margin-inline:auto;">Me manda o VIN e quilometragem do anúncio. Eu devolvo: Status → Risco → Recomendação objetiva → Próximo passo executável.</p>
+    <a href="#top" class="btn btn-primary">Começar avaliação</a>
+  </section>
 
   <script>
-    const params = new URLSearchParams(location.search);
-    const target = params.get('target') || '';
-
-    const safeTarget = (() => {
-      try {
-        const u = new URL(target);
-        if (!['http:', 'https:'].includes(u.protocol)) throw new Error('invalid protocol');
-        return u.toString();
-      } catch {
-        return null;
-      }
-    })();
-
-    const targetLink = document.getElementById('targetLink');
-    const openBtn = document.getElementById('openExternal');
-
-    if (safeTarget) {
-      targetLink.href = safeTarget;
-      targetLink.textContent = `Ir para seu app: ${new URL(safeTarget).host}`;
-      openBtn.addEventListener('click', () => {
-        window.location.href = safeTarget;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
       });
-    } else {
-      targetLink.textContent = 'Falta ?target= no link';
-      targetLink.removeAttribute('href');
-      openBtn.textContent = 'Use um link com ?target=';
-      openBtn.disabled = true;
-      openBtn.style.opacity = '.6';
-      openBtn.style.cursor = 'not-allowed';
-    }
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Motion 2: subtle parallax depth on main photo
+    const photo = document.querySelector('.photo');
+    window.addEventListener('scroll', () => {
+      if (!photo) return;
+      const r = photo.getBoundingClientRect();
+      const shift = Math.max(-18, Math.min(18, (window.innerHeight - r.top) * 0.03 - 10));
+      photo.style.transform = `translateY(${shift}px)`;
+    }, { passive: true });
   </script>
 </body>
 </html>
